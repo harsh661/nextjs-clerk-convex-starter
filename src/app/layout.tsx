@@ -4,6 +4,7 @@ import "./globals.css";
 import { ConvexClientProvider } from "./components/providers/ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { UserSync } from "./components/shared/UserSync";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,10 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <ConvexClientProvider>{children}</ConvexClientProvider>
+          <ConvexClientProvider>
+            <UserSync />
+            {children}
+          </ConvexClientProvider>
         </body>
       </html>
     </ClerkProvider>
