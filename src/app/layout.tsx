@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ConvexClientProvider } from "./components/providers/ConvexClientProvider";
+import { ConvexClientProvider } from "../components/providers/ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import { UserSync } from "./components/shared/UserSync";
+import { UserSync } from "../components/shared/UserSync";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
