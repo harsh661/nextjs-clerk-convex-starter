@@ -16,10 +16,6 @@ export const getOrCreateUser = mutation({
     const id = await ctx.db.insert("users", {
       clerkId: identity.subject,
       email: identity.email ?? "",
-
-      plan: "free",
-      monitorLimit: 5,
-
       createdAt: Date.now(),
     });
 
