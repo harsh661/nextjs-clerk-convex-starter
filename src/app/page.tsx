@@ -1,103 +1,196 @@
-import Image from "next/image";
+import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+const guides = [
+  {
+    title: "Start with auth",
+    description:
+      "Sign in with Clerk, protect routes with middleware, and keep your app surface secure from day one.",
+    href: "/sign-in",
+    cta: "Open sign in",
+  },
+  {
+    title: "Learn queries",
+    description:
+      "Use Convex queries to read live data in your UI. They re-render automatically when your backend data changes.",
+    href: "https://docs.convex.dev/functions/query-functions",
+    cta: "Read about queries",
+    external: true,
+  },
+  {
+    title: "Learn mutations",
+    description:
+      "Use mutations to create, update, and delete data. This starter is set up so you can add app logic quickly.",
+    href: "https://docs.convex.dev/functions/mutation-functions",
+    cta: "Read about mutations",
+    external: true,
+  },
+];
+
+export default async function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="min-h-screen bg-background text-foreground">
+      <section className="relative mx-auto flex flex-col gap-28 min-h-screen w-full max-w-7xl items-center px-6 py-16 sm:px-8 lg:px-12">
+        <div className="absolute inset-0 -z-10">
+          <div
+            className="absolute inset-0 opacity-[0.06]"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, var(--border) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--border) 1px, transparent 1px)
+              `,
+              backgroundSize: "72px 72px",
+              maskImage:
+                "radial-gradient(circle at center, black 35%, transparent 80%)",
+              WebkitMaskImage:
+                "radial-gradient(circle at center, black 35%, transparent 80%)",
+            }}
+          />
+          <div
+            className="absolute left-1/2 top-24 h-64 w-64 -translate-x-1/2 rounded-full blur-3xl opacity-10"
+            style={{ background: "var(--primary)" }}
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        <div className="grid w-full items-end gap-12">
+          <div className="">
+            <div
+              className="mb-8 inline-flex items-center gap-2 border px-3 py-1 text-[11px] uppercase tracking-[0.22em]"
+              style={{
+                borderColor: "var(--border)",
+                background: "rgba(255,255,255,0.02)",
+              }}
+            >
+              <span
+                className="inline-block h-2 w-2 rounded-full"
+                style={{ background: "var(--primary)" }}
+              />
+              Next.js · Clerk · Convex Starter
+            </div>
+
+            <h1 className="max-w-5xl text-4xl font-medium leading-[1.02] tracking-[-0.04em] sm:text-5xl md:text-6xl lg:text-7xl">
+              Build authenticated apps faster with a clean starter for{" "}
+              <span className="text-white/55">Next.js, Clerk, and Convex.</span>
+            </h1>
+
+            <p className="mt-8 max-w-3xl text-base leading-7 text-white/55 sm:text-lg sm:leading-8">
+              This starter gives you protected routes, auth flows, Convex setup,
+              and a clean base structure so you can focus on product logic
+              instead of boilerplate. Start with sign-in, add your queries and
+              mutations, and grow from there.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Link
+                href="/sign-in"
+                className="inline-flex items-center justify-center border px-5 py-3 text-sm font-medium transition hover:opacity-90"
+                style={{
+                  background: "var(--primary)",
+                  color: "#101010",
+                  borderColor: "var(--primary)",
+                }}
+              >
+                Get started
+              </Link>
+
+              <a
+                href="https://docs.convex.dev/home"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center border px-5 py-3 text-sm font-medium text-foreground transition hover:bg-white/5"
+                style={{ borderColor: "var(--border)" }}
+              >
+                Convex docs
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="border p-4 sm:p-5"
+          style={{
+            borderColor: "var(--border)",
+            background:
+              "linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.015))",
+          }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <div className="mb-8 flex items-center justify-between">
+            <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">
+              Getting started
+            </p>
+            <p className="text-[11px] uppercase tracking-[0.22em] text-white/30">
+              Starter guide
+            </p>
+          </div>
+
+          <div className="mb-8">
+            <h2 className="text-2xl font-medium leading-tight sm:text-3xl">
+              Key things this starter helps you set up.
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-3">
+            {guides.map((item, index) => {
+              const content = (
+                <div
+                  className="group flex h-full flex-col justify-between border p-4 transition hover:-translate-y-0.5"
+                  style={{
+                    borderColor: "var(--border)",
+                    background: "var(--card)",
+                  }}
+                >
+                  <div>
+                    <div className="mb-6 text-[11px] uppercase tracking-[0.18em] text-white/35">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+
+                    <h3 className="text-lg font-medium">{item.title}</h3>
+
+                    <p className="mt-3 text-sm leading-6 text-white/50">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <div
+                    className="mt-8 flex items-center justify-between border px-3 py-2 text-[11px] uppercase tracking-[0.18em]"
+                    style={{
+                      borderColor: "var(--border)",
+                      background:
+                        index === 0
+                          ? "var(--primary)"
+                          : "rgba(255,255,255,0.02)",
+                      color: index === 0 ? "#101010" : "var(--foreground)",
+                    }}
+                  >
+                    <span>{item.cta}</span>
+                    <span>↗</span>
+                  </div>
+                </div>
+              );
+
+              if (item.external) {
+                return (
+                  <a
+                    key={item.title}
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {content}
+                  </a>
+                );
+              }
+
+              return (
+                <Link key={item.title} href={item.href}>
+                  {content}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
